@@ -1,7 +1,8 @@
 # КЕША
-
+import voice
+import time
 import subprocess
-import config
+import config as config
 import stt
 import tts
 from fuzzywuzzy import fuzz
@@ -82,6 +83,28 @@ def execute_cmd(cmd: str):
     elif cmd == 'exit':
         tts.va_speak("До свидания!")
         exit()
+
+
+    alarm_time = voice.split(":")
+    alarm_hour = int(alarm_time[0])
+    alarm_minute = int(alarm_time[1])
+
+    if cmd == 'alarm':
+        def set_alarm():
+            tts.va_speak("Укажите время будильника в формате ЧЧ:ММ")
+        voice = stt.va_listen()
+        tts.va_speak("Будильник установлен")
+        while True:
+            now = datetime.datetime.now()
+            if now.hour == alarm_hour and now.minute == alarm_minute:
+                tts.va_speak("Пора вставать!")
+                break
+            time.sleep(60)
+
+    set_alarm()
+
+
+
 
 # начать прослушивание команд
 stt.va_listen(va_respond)
